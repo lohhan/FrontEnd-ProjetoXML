@@ -11,10 +11,12 @@ app.component("table-section", {
             <th>CNPJ</th>
             <th>Nome</th>
             <th>Valor</th>
+            <th>Visualizar</th>
+            <th>Deletar</th>
          </tr>
       </thead>
       <tbody>
-         <tr v-for="item in data">
+         <tr v-for="item in data" :key="item.id">
             <td>{{item.tipoNota}}</td>
             <td>{{item.numeroNota}}</td>
             <td>{{item.chaveNota}}</td>
@@ -22,8 +24,8 @@ app.component("table-section", {
             <td>{{item.cnpj}}</td>
             <td>{{item.nome}}</td>
             <td>R$ {{item.valor}}</td>
-            <button class="las la-eye border px-4 py-1 bg-blue2 rounded-md text-white"></button>
-           <button @click="verificacaoDeletar" class="las la-trash px-4 py-1 bg-red-600 rounded-md text-white "></button>
+            <td><button class="las la-eye border px-4 py-1 bg-blue2 rounded-md text-white"></button></td>
+            <td><button @click="verificacaoDeletar(item.id)" class="las la-trash px-4 py-1 bg-red-600 rounded-md text-white "></button></td>
          </tr>
       </tbody>
    </table>
@@ -32,6 +34,7 @@ app.component("table-section", {
     return {
       data: [
         {
+          id: "1",
           tipoNota: "NFE",
           numeroNota: "1987",
           chaveNota: "213120312802",
@@ -41,20 +44,26 @@ app.component("table-section", {
           valor: 20,
         },
         {
+          id: "2",
           tipoNota: "NFE",
           numeroNota: "1987",
           chaveNota: "213120312802",
           dataEmissao: "25/04/2005",
           cnpj: "3123291091/14",
-          nome: "Lohhan Guilherme",
+          nome: "Ana Letícia (namo)",
           valor: 20,
         },
       ],
     };
   },
   methods: {
-    verificacaoDeletar() {
-      alert("teste");
+    verificacaoDeletar(id) {
+      const resposta = confirm(
+        "O item será deletado desta lista. Você deseja confirmar essa ação?"
+      );
+      if (resposta) {
+        this.data = this.data.filter((item) => item.id != id);
+      }
     },
   },
 });

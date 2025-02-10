@@ -1,7 +1,7 @@
 app.component("button-carregar-pasta", {
   /*html*/
   template: `
-      <button @click="selecionarArquivo" class="bg-blue1 p-6 rounded-md text-white font-semibold my-4  hover:bg-blue3 duration-150 ease-in-out" >
+      <button @click="selecionarArquivo" class="bg-blue1 p-6 rounded-md text-white font-semibold my-4 max-w-96 self-center hover:bg-blue3 duration-150 ease-in-out" >
          Selecionar Pasta de XMLs
       </button>
       <input @change="handleFileChange" ref="inputFile" class="hidden" type="file" multiple webkitdirectory></input>

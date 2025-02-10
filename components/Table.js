@@ -11,8 +11,6 @@ app.component("table-section", {
             <th>CNPJ</th>
             <th>Nome</th>
             <th>Valor</th>
-            <th>Visualizar</th>
-            <th>Deletar</th>
          </tr>
       </thead>
       <tbody>
@@ -24,15 +22,14 @@ app.component("table-section", {
             <td>{{item.cnpj}}</td>
             <td>{{item.nome}}</td>
             <td>R$ {{item.valor}}</td>
-            <td><button class="las la-eye border px-4 py-1 bg-blue2 rounded-md text-white"></button></td>
-            <td><button class="las la-trash px-4 py-1 bg-red-600 rounded-md text-white botao-deletar"></button></td>
+            <button class="las la-eye border px-4 py-1 bg-blue2 rounded-md text-white"></button>
+           <button @click="verificacaoDeletar" class="las la-trash px-4 py-1 bg-red-600 rounded-md text-white "></button>
          </tr>
       </tbody>
    </table>
   `,
   data() {
     return {
-      datatable: null,
       data: [
         {
           tipoNota: "NFE",
@@ -53,9 +50,11 @@ app.component("table-section", {
           valor: 20,
         },
       ],
-      methods: {
-        verificacaoDeletar() {},
-      },
     };
+  },
+  methods: {
+    verificacaoDeletar() {
+      alert("teste");
+    },
   },
 });

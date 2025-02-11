@@ -4,6 +4,7 @@ app.component("table-section", {
   <table id="myTable" class="display border-blue3">
       <thead class="text-blue1">
          <tr>
+            <th>ID</th>
             <th>Tipo</th>
             <th>Número</th>
             <th>Chave</th>
@@ -16,14 +17,15 @@ app.component("table-section", {
          </tr>
       </thead>
       <tbody>
-         <tr v-for="item in data" :key="item.id">
-            <td>{{item.tipoNota}}</td>
-            <td>{{item.numeroNota}}</td>
-            <td>{{item.chaveNota}}</td>
-            <td>{{item.dataEmissao}}</td>
-            <td>{{item.cnpj}}</td>
-            <td>{{item.nome}}</td>
-            <td>R$ {{item.valor}}</td>
+         <tr>
+            <td>{{notaFiscalId}}</td>
+            <td>teste</td>
+            <td>teste</td>
+            <td>teste</td>
+            <td>teste</td>
+            <td>teste</td>
+            <td>teste</td>
+            <td>teste</td>
             <td><button class="las la-eye border px-4 py-1 bg-blue2 rounded-md text-white"></button></td>
             <td><button @click="verificacaoDeletar(item.id)" class="las la-trash px-4 py-1 bg-red-600 rounded-md text-white "></button></td>
          </tr>
@@ -32,38 +34,28 @@ app.component("table-section", {
   `,
   data() {
     return {
-      data: [
-        {
-          id: "1",
-          tipoNota: "NFE",
-          numeroNota: "1987",
-          chaveNota: "213120312802",
-          dataEmissao: "25/04/2005",
-          cnpj: "3123291091/14",
-          nome: "Lohhan Guilherme",
-          valor: 20,
-        },
-        {
-          id: "2",
-          tipoNota: "NFE",
-          numeroNota: "1987",
-          chaveNota: "213120312802",
-          dataEmissao: "25/04/2005",
-          cnpj: "3123291091/14",
-          nome: "Ana Letícia (namo)",
-          valor: 20,
-        },
-      ],
+      notas: [],
+      notaFiscalId: "",
+      url: "https://localhost:7119/NotasFiscais",
     };
   },
+  mounted() {
+    this.getNotas();
+  },
   methods: {
-    verificacaoDeletar(id) {
-      const resposta = confirm(
-        "O item será deletado desta lista. Você deseja confirmar essa ação?"
-      );
-      if (resposta) {
-        this.data = this.data.filter((item) => item.id != id);
-      }
+    async getNotas() {
+      await axios
+        .get(this.url)
+        .then((response) => {
+          return response.data;
+        })
+        .then((responseData) => {
+          this.notaFiscalId = responseData[0].notaFiscalId;
+          console.log(this.notaFiscalId);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 });

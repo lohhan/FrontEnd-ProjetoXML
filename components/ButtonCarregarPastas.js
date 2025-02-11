@@ -1,17 +1,18 @@
 app.component("button-carregar-pasta", {
   /*html*/
   template: `
-      <button @click="selecionarArquivo" class="bg-blue1 p-6 rounded-md text-white font-semibold my-4 max-w-96 self-center hover:bg-blue3 duration-150 ease-in-out" >
+      <button @click="selecionarArquivo" class="bg-blue1 p-6 rounded-md text-white font-semibold my-4  hover:bg-blue3 duration-150 ease-in-out" >
          Selecionar Pasta de XMLs
       </button>
-      <input @change="handleFileChange" ref="inputFile" class="hidden" type="file" multiple webkitdirectory></input>
+      <input @change="handleFileChange" ref="inputFile" class="hidden" type="file" multiple ></input>
       <ul>
          <li v-for="(file, index) in files" :key="index">{{file.path}}</li>
       </ul>
    `,
   data() {
     return {
-      files: [],
+      formData: null,
+      url: "https://localhost:7119/NotasFiscais",
     };
   },
   methods: {
@@ -19,16 +20,21 @@ app.component("button-carregar-pasta", {
       this.$refs.inputFile.click();
     },
     handleFileChange(e) {
+      this.formData = new FormData();
       const fileList = e.target.files;
-      this.files = [];
 
       for (let i = 0; i < fileList.length; i++) {
-        const file = fileList[i];
-        this.files.push({
-          name: file.name,
-          path: file.webkitRelativePath,
-        });
+        this.formData.append("files", fileList[i]);
       }
+      this.submitData(this.formData);
+    },
+    async submitData(data) {
+      try {
+        await axios.post(this.url, data);
+      } catch (error) {
+        console.log(error);
+      }
+      window.location.reload();
     },
   },
 });

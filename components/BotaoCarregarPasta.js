@@ -1,4 +1,4 @@
-app.component("button-carregar-pasta", {
+const BotaoCarregarPasta = {
   /*html*/
   template: `
       <button @click="selecionarArquivo" class="bg-blue1 p-6 rounded-md text-white font-semibold my-4  hover:bg-blue3 duration-150 ease-in-out" >
@@ -37,4 +37,4 @@ app.component("button-carregar-pasta", {
       window.location.reload();
     },
   },
-});
+};

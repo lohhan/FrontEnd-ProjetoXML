@@ -1,4 +1,4 @@
-app.component("button-deletar-itens", {
+const BotaoDeletar = {
   /*html*/
   props: {
     nota: {
@@ -32,4 +32,4 @@ app.component("button-deletar-itens", {
       }
     },
   },
-});
+};

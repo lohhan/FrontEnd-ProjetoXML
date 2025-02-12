@@ -1,4 +1,4 @@
-app.component("table-section", {
+const Table = {
   /*html*/
   template: `
   <table id="myTable" class="display border-blue3">
@@ -119,4 +119,4 @@ app.component("table-section", {
       }
     },
   },
-});
+};

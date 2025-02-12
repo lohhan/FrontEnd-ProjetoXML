@@ -23,8 +23,7 @@ const Table = {
     return {
       table: null,
       notas: [],
-      urlPost: "https://localhost:7119/NotasFiscais",
-      urlDelete: "https://localhost:7119/NotasFiscais",
+      url: "https://localhost:7119/NotasFiscais",
     };
   },
   mounted() {
@@ -35,7 +34,7 @@ const Table = {
     async getNotas() {
       try {
         const response = await axios
-          .get(this.urlPost)
+          .get(this.url)
           .then((response) => {
             return response.data;
           })
@@ -61,15 +60,23 @@ const Table = {
               data: "notaFiscalId",
               title: "Excluir",
               render: () => {
-                return '<button class="las la-trash text-red-600"></button>';
+                return '<button class="las la-trash text-red-600 font-md"></button>';
+              },
+            },
+            {
+              data: "notaFiscalId",
+              title: "Baixar",
+              render: () => {
+                return '<button class="las la-arrow-circle-down"></button>';
               },
             },
           ],
           columnDefs: [
             {
-              targets: 8,
+              targets: 4,
               createdCell: (td, cellData, rowData, row, col) => {
-                $(td).on("click", () => this.excluirNota(cellData));
+                const [date] = cellData.split("T");
+                $(td).text(date);
               },
             },
             {
@@ -91,10 +98,15 @@ const Table = {
               },
             },
             {
-              targets: 4,
+              targets: 8,
               createdCell: (td, cellData, rowData, row, col) => {
-                const [date] = cellData.split("T");
-                $(td).text(date);
+                $(td).on("click", () => this.excluirNota(cellData));
+              },
+            },
+            {
+              targets: 9,
+              createdCell: (td, cellData, rowData, row, col) => {
+                $(td).on("click", () => this.downloadNota(cellData));
               },
             },
           ],
@@ -103,14 +115,32 @@ const Table = {
         console.log(error);
       }
     },
-    excluirNota(id) {
+    async excluirNota(id) {
       const response = confirm(
         `O item de id: ${id} será deletado e essa ação é irreversível. Você tem certeza que deseja realizar esta ação?`
       );
       if (response) {
-        axios.delete(`${this.urlDelete}/${id}`);
+        await axios.delete(`${this.url}/${id}`);
         alert("Item deletado com sucesso!");
         window.location.reload();
+      }
+    },
+    async downloadNota(id) {
+      try {
+        const response = await axios.get(`${this.url}/download/${id}`, {
+          responseType: "blob",
+        });
+        const blob = new Blob([response.data], { type: "application/xml" });
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `nota_fiscal${id}.xml`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (e) {
+        console.error("Erro ao tentar baixar o arquivo!", error);
       }
     },
     verificarTamanhoLista() {

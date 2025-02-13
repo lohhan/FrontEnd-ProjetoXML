@@ -4,7 +4,6 @@ const Table = {
   <table id="myTable" class="display border-blue3">
       <thead class="text-blue1">
          <tr>
-            <th>ID</th>
             <th>Tipo</th>
             <th>Número</th>
             <th>Chave</th>
@@ -48,7 +47,6 @@ const Table = {
         $("#myTable").DataTable({
           data: this.notas,
           columns: [
-            { data: "notaFiscalId" },
             { data: "tipoDaNota" },
             { data: "numeroDaNota" },
             { data: "chaveDaNota" },
@@ -73,38 +71,38 @@ const Table = {
           ],
           columnDefs: [
             {
-              targets: 4,
+              targets: 3,
               createdCell: (td, cellData, rowData, row, col) => {
                 const [date] = cellData.split("T");
                 $(td).text(date);
               },
             },
             {
-              targets: 5,
+              targets: 4,
               createdCell: (td, cellData, rowData, row, col) => {
                 const maskedValue = cellData
                   .replace(/D/g, "")
                   .replace(
                     /(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/,
-                    "$1.$2.$3/$4-$5"
+                    "$1.$2.$3/$4/$5"
                   );
                 $(td).text(maskedValue);
               },
             },
             {
-              targets: 7,
+              targets: 6,
               createdCell: (td, cellData, rowData, row, col) => {
-                $(td).text(`R$ ${cellData}`);
+                $(td).text(`R$${cellData}`);
               },
             },
             {
-              targets: 8,
+              targets: 7,
               createdCell: (td, cellData, rowData, row, col) => {
                 $(td).on("click", () => this.excluirNota(cellData));
               },
             },
             {
-              targets: 9,
+              targets: 8,
               createdCell: (td, cellData, rowData, row, col) => {
                 $(td).on("click", () => this.downloadNota(cellData));
               },
